@@ -9,9 +9,9 @@ services:
     devices:
       - /dev/dri/card0:/dev/dri/card0
     volumes:
-      - /home/alex/media/configs/cache:/cache
-      - /home/alex/media/tv:/data/tv
-      - /home/alex/media/movies:/data/movies
+      - /home/user/media/configs/cache:/cache
+      - /home/user/media/tv:/data/tv
+      - /home/user/media/movies:/data/movies
     environment:
       - jellyfin_publishedserverurl=10.0.0.37
     ports:
@@ -24,9 +24,9 @@ services:
     hostname: jackett
     privileged: true
     volumes:
-      - /home/alex/media/configs/jackett:/config
-      - /home/alex/media/configs/wireguard:/config/wireguard
-      - /home/alex/media/torrents:/blackhole
+      - /home/user/media/configs/jackett:/config
+      - /home/user/media/configs/wireguard:/config/wireguard
+      - /home/user/media/torrents:/blackhole
     environment:
       - VPN_ENABLED=yes
       - VPN_TYPE=wireguard
@@ -43,7 +43,7 @@ services:
     ports:
       - 90:80
     volumes:
-      - /home/alex/media/configs/organizr:/config
+      - /home/user/media/configs/organizr:/config
     environment:
       - fpm=true
       - branch=v2-master
@@ -57,9 +57,9 @@ services:
     hostname: qbittorrent
     privileged: true
     volumes:
-      - /home/alex/media/configs/qbittorrent:/config
-      - /home/alex/media/configs/wireguard:/config/wireguard
-      - /home/alex/media/torrents/:/downloads
+      - /home/user/media/configs/qbittorrent:/config
+      - /home/user/media/configs/wireguard:/config/wireguard
+      - /home/user/media/torrents/:/downloads
     environment:
       - VPN_ENABLED=yes
       - VPN_TYPE=wireguard
@@ -78,9 +78,9 @@ services:
       - tz=europe/london
       - umask_set=022
     volumes:
-      - /home/alex/media/configs/radarr:/config
-      - /home/alex/media/movies:/movies
-      - /home/alex/media/torrents:/downloads
+      - /home/user/media/configs/radarr:/config
+      - /home/user/media/movies:/movies
+      - /home/user/media/torrents:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -94,9 +94,9 @@ services:
       - pgid=100
       - tz=europe/london
     volumes:
-      - /home/alex/media/configs/sabnzbd:/config
-      - /home/alex/media/downloads:/downloads
-      - /home/alex/media/downloads/incomplete:/incomplete-downloads
+      - /home/user/media/configs/sabnzbd:/config
+      - /home/user/media/downloads:/downloads
+      - /home/user/media/downloads/incomplete:/incomplete-downloads
     ports:
       - 8181:8080
       - 9191:9090
@@ -112,9 +112,9 @@ services:
       - tz=europe/london
       - umask_set=022
     volumes:
-      - /home/alex/media/configs/sonarr:/config
-      - /home/alex/media/tv:/tv
-      - /home/alex/media/torrents:/downloads
+      - /home/user/media/configs/sonarr:/config
+      - /home/user/media/tv:/tv
+      - /home/user/media/torrents:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
