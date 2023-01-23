@@ -5,15 +5,16 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     hostname: jellyfin
-    user: 1000:1000
     devices:
       - /dev/dri/card0:/dev/dri/card0
     volumes:
-      - /home/user/media/configs/cache:/cache
-      - /home/user/media/tv:/data/tv
-      - /home/user/media/movies:/data/movies
+      - /home/[USER]/media/configs/cache:/cache
+      - /home/[USER]/media/tv:/data/tv
+      - /home/[USER]/media/movies:/data/movies
     environment:
       - jellyfin_publishedserverurl=10.0.0.37
+      - PUID=1000
+      - PGID=1000
     ports:
       - 80:8096
     restart: unless-stopped
@@ -24,32 +25,18 @@ services:
     hostname: jackett
     privileged: true
     volumes:
-      - /home/user/media/configs/jackett:/config
-      - /home/user/media/configs/wireguard:/config/wireguard
-      - /home/user/media/torrents:/blackhole
+      - /home/[USER]/media/configs/jackett:/config
+      - /home/[USER]/media/configs/wireguard:/config/wireguard
+      - /home/[USER]/media/torrents:/blackhole
     environment:
       - VPN_ENABLED=yes
       - VPN_TYPE=wireguard
       - LAN_NETWORK=10.0.0.0/24
+      - PUID=1000
+      - PGID=1000
     ports:
       - 9117:9117
     restart: unless-stopped
-
-  organizr:
-    image: organizr/organizr
-    container_name: organizr
-    hostname: organizr
-    restart: unless-stopped
-    ports:
-      - 90:80
-    volumes:
-      - /home/user/media/configs/organizr:/config
-    environment:
-      - fpm=true
-      - branch=v2-master
-      - puid=998
-      - pgid=100
-      - tz=europe/london
 
   qbittorrentvpn:
     image: dyonr/qbittorrentvpn
@@ -57,13 +44,15 @@ services:
     hostname: qbittorrent
     privileged: true
     volumes:
-      - /home/user/media/configs/qbittorrent:/config
-      - /home/user/media/configs/wireguard:/config/wireguard
-      - /home/user/media/torrents/:/downloads
+      - /home/[USER]/media/configs/qbittorrent:/config
+      - /home/[USER]/media/configs/wireguard:/config/wireguard
+      - /home/[USER]/media/torrents/:/downloads
     environment:
       - VPN_ENABLED=yes
       - VPN_TYPE=wireguard
       - LAN_NETWORK=10.0.0.0/24
+      - PUID=1000
+      - PGID=1000
     ports:
       - 8765:8080
     restart: unless-stopped
@@ -73,33 +62,15 @@ services:
     container_name: radarr
     hostname: radarr
     environment:
-      - puid=998
-      - pgid=100
       - tz=europe/london
-      - umask_set=022
+      - PUID=1000
+      - PGID=1000
     volumes:
-      - /home/user/media/configs/radarr:/config
-      - /home/user/media/movies:/movies
-      - /home/user/media/torrents:/downloads
+      - /home/[USER]/media/configs/radarr:/config
+      - /home/[USER]/media/movies:/movies
+      - /home/[USER]/media/torrents:/downloads
     ports:
       - 7878:7878
-    restart: unless-stopped
-
-  sabnzbd:
-    image: ghcr.io/linuxserver/sabnzbd
-    container_name: sabnzbd
-    hostname: sabnzbd
-    environment:
-      - puid=998
-      - pgid=100
-      - tz=europe/london
-    volumes:
-      - /home/user/media/configs/sabnzbd:/config
-      - /home/user/media/downloads:/downloads
-      - /home/user/media/downloads/incomplete:/incomplete-downloads
-    ports:
-      - 8181:8080
-      - 9191:9090
     restart: unless-stopped
 
   sonarr:
@@ -107,14 +78,26 @@ services:
     container_name: sonarr
     hostname: sonarr
     environment:
-      - puid=998
-      - pgid=100
       - tz=europe/london
-      - umask_set=022
+      - PUID=1000
+      - PGID=1000
     volumes:
-      - /home/user/media/configs/sonarr:/config
-      - /home/user/media/tv:/tv
-      - /home/user/media/torrents:/downloads
+      - /home/[USER]/media/configs/sonarr:/config
+      - /home/[USER]/media/tv:/tv
+      - /home/[USER]/media/torrents:/downloads
     ports:
       - 8989:8989
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /home/[USER]/media/configs/prowlarr:/config
+    ports:
+      - 9696:9696
     restart: unless-stopped
